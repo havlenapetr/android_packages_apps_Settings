@@ -134,7 +134,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         }
         registerReceiver(mReceiver, mFilter);
         if (mKeyStoreNetworkId != -1 && KeyStore.getInstance().test() == KeyStore.NO_ERROR) {
-            connect(mKeyStoreNetworkId);
+            connect(mKeyStoreNetworkId, mSelected.adhoc);
         }
         mKeyStoreNetworkId = -1;
     }
@@ -211,16 +211,17 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
             case MENU_ID_CONNECT:
                 if (mSelected.networkId != -1) {
                     if (!requireKeyStore(mSelected.getConfig())) {
-                        connect(mSelected.networkId);
+                        connect(mSelected.networkId, mSelected.adhoc);
                     }
                 } else if (mSelected.security == AccessPoint.SECURITY_NONE) {
                     // Shortcut for open networks.
                     WifiConfiguration config = new WifiConfiguration();
                     config.SSID = AccessPoint.convertToQuotedString(mSelected.ssid);
+					config.adhocSSID = mSelected.adhoc;
                     config.allowedKeyManagement.set(KeyMgmt.NONE);
                     int networkId = mWifiManager.addNetwork(config);
                     mWifiManager.enableNetwork(networkId, false);
-                    connect(networkId);
+                    connect(networkId, mSelected.adhoc);
                 } else {
                     showDialog(mSelected, false);
                 }
@@ -261,7 +262,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
 
             if (config == null) {
                 if (mSelected != null && !requireKeyStore(mSelected.getConfig())) {
-                    connect(mSelected.networkId);
+                    connect(mSelected.networkId, mSelected.adhoc);
                 }
             } else if (config.networkId != -1) {
                 if (mSelected != null) {
@@ -276,7 +277,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
                     if (mDialog.edit || requireKeyStore(config)) {
                         saveNetworks();
                     } else {
-                        connect(networkId);
+                        connect(networkId, mSelected.adhoc);
                     }
                 }
             }
@@ -306,7 +307,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         saveNetworks();
     }
 
-    private void connect(int networkId) {
+    private void connect(int networkId, boolean adhoc) {
         if (networkId == -1) {
             return;
         }
@@ -317,6 +318,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
                 AccessPoint accessPoint = (AccessPoint) mAccessPoints.getPreference(i);
                 if (accessPoint.networkId != -1) {
                     WifiConfiguration config = new WifiConfiguration();
+					config.adhocSSID = accessPoint.adhoc;
                     config.networkId = accessPoint.networkId;
                     config.priority = 0;
                     mWifiManager.updateNetwork(config);
@@ -329,9 +331,10 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         WifiConfiguration config = new WifiConfiguration();
         config.networkId = networkId;
         config.priority = ++mLastPriority;
+		config.adhocSSID = adhoc;
         mWifiManager.updateNetwork(config);
         saveNetworks();
-
+		
         // Connect to network by disabling others.
         mWifiManager.enableNetwork(networkId, true);
         mWifiManager.reconnect();
@@ -372,7 +375,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
                 } else if (mResetNetworks && config.status == Status.DISABLED) {
                     config.status = Status.CURRENT;
                 }
-
+				
                 AccessPoint accessPoint = new AccessPoint(this, config);
                 accessPoint.update(mLastInfo, mLastState);
                 accessPoints.add(accessPoint);
@@ -383,8 +386,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         if (results != null) {
             for (ScanResult result : results) {
                 // Ignore hidden and ad-hoc networks.
-                if (result.SSID == null || result.SSID.length() == 0 ||
-                        result.capabilities.contains("[IBSS]")) {
+                if (result.SSID == null || result.SSID.length() == 0) {
                     continue;
                 }
 
