@@ -385,7 +385,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         List<ScanResult> results = mWifiManager.getScanResults();
         if (results != null) {
             for (ScanResult result : results) {
-                // Ignore hidden and ad-hoc networks.
+                // Ignore hidden networks
                 if (result.SSID == null || result.SSID.length() == 0) {
                     continue;
                 }
