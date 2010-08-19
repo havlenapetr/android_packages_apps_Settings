@@ -134,7 +134,9 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         }
         registerReceiver(mReceiver, mFilter);
         if (mKeyStoreNetworkId != -1 && KeyStore.getInstance().test() == KeyStore.NO_ERROR) {
-            connect(mKeyStoreNetworkId, mSelected.adhoc);
+			WifiConfiguration config = new WifiConfiguration();
+			config.networkId = mKeyStoreNetworkId;
+            connect(config);
         }
         mKeyStoreNetworkId = -1;
     }
@@ -210,8 +212,9 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         switch (item.getItemId()) {
             case MENU_ID_CONNECT:
                 if (mSelected.networkId != -1) {
-                    if (!requireKeyStore(mSelected.getConfig())) {
-                        connect(mSelected.networkId, mSelected.adhoc);
+					WifiConfiguration config = mSelected.getConfig();
+                    if (!requireKeyStore(config)) {
+                        connect(config);
                     }
                 } else if (mSelected.security == AccessPoint.SECURITY_NONE) {
                     // Shortcut for open networks.
@@ -220,8 +223,9 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
 					config.adhocSSID = mSelected.adhoc;
                     config.allowedKeyManagement.set(KeyMgmt.NONE);
                     int networkId = mWifiManager.addNetwork(config);
+					config.networkId = networkId;
                     mWifiManager.enableNetwork(networkId, false);
-                    connect(networkId, mSelected.adhoc);
+                    connect(config);
                 } else {
                     showDialog(mSelected, false);
                 }
@@ -260,11 +264,12 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         } else if (button == WifiDialog.BUTTON_SUBMIT && mDialog != null) {
             WifiConfiguration config = mDialog.getConfig();
 
-            if (config == null) {
-                if (mSelected != null && !requireKeyStore(mSelected.getConfig())) {
-                    connect(mSelected.networkId, mSelected.adhoc);
-                }
-            } else if (config.networkId != -1) {
+            if (config == null && mSelected != null) {
+				config = mSelected.getConfig();
+				if(!requireKeyStore(config)) {
+					connect(config);
+				}
+			} else if (config.networkId != -1) {
                 if (mSelected != null) {
                     mWifiManager.updateNetwork(config);
                     saveNetworks();
@@ -277,7 +282,7 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
                     if (mDialog.edit || requireKeyStore(config)) {
                         saveNetworks();
                     } else {
-                        connect(networkId, mSelected.adhoc);
+                        connect(config);
                     }
                 }
             }
@@ -307,8 +312,8 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
         saveNetworks();
     }
 
-    private void connect(int networkId, boolean adhoc) {
-        if (networkId == -1) {
+    private void connect(WifiConfiguration config) {
+        if (config == null || config.networkId == -1) {
             return;
         }
 
@@ -317,26 +322,23 @@ public class WifiSettings extends PreferenceActivity implements DialogInterface.
             for (int i = mAccessPoints.getPreferenceCount() - 1; i >= 0; --i) {
                 AccessPoint accessPoint = (AccessPoint) mAccessPoints.getPreference(i);
                 if (accessPoint.networkId != -1) {
-                    WifiConfiguration config = new WifiConfiguration();
-					config.adhocSSID = accessPoint.adhoc;
-                    config.networkId = accessPoint.networkId;
-                    config.priority = 0;
-                    mWifiManager.updateNetwork(config);
+                    WifiConfiguration c = new WifiConfiguration();
+					c.adhocSSID = accessPoint.adhoc;
+                    c.networkId = accessPoint.networkId;
+                    c.priority = 0;
+                    mWifiManager.updateNetwork(c);
                 }
             }
             mLastPriority = 0;
         }
 
         // Set to the highest priority and save the configuration.
-        WifiConfiguration config = new WifiConfiguration();
-        config.networkId = networkId;
         config.priority = ++mLastPriority;
-		config.adhocSSID = adhoc;
         mWifiManager.updateNetwork(config);
         saveNetworks();
 		
         // Connect to network by disabling others.
-        mWifiManager.enableNetwork(networkId, true);
+        mWifiManager.enableNetwork(config.networkId, true);
         mWifiManager.reconnect();
         mResetNetworks = true;
     }
