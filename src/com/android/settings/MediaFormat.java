@@ -54,6 +54,8 @@ public class MediaFormat extends Activity {
     private View mFinalView;
     private Button mFinalButton;
 
+    private String mStorageDirectory;
+
     /**
      * The user has gone through the multiple confirmation, so now we go ahead
      * and invoke the Mount Service to format the SD card.
@@ -64,13 +66,17 @@ public class MediaFormat extends Activity {
                 if (Utils.isMonkeyRunning()) {
                     return;
                 }
+                if (mStorageDirectory == null ||
+                        mStorageDirectory.length() == 0) {
+                    return;
+                }
                 final IMountService service =
                         IMountService.Stub.asInterface(ServiceManager.getService("mount"));
                 if (service != null) {
                     new Thread() {
                         public void run() {
                             try {
-                                service.formatVolume(Environment.getExternalStorageDirectory().toString());
+                                service.formatVolume(mStorageDirectory);
                             } catch (Exception e) {
                                 // Intentionally blank - there's nothing we can do here
                                 Log.w("MediaFormat", "Unable to invoke IMountService.formatMedia()");
@@ -172,6 +178,9 @@ public class MediaFormat extends Activity {
         mFinalView = null;
         mInflater = LayoutInflater.from(this);
         mLockUtils = new LockPatternUtils(this);
+
+        Intent intent = getIntent();
+        mStorageDirectory = (String) intent.getExtra("storage");
 
         establishInitialState();
     }
