@@ -335,9 +335,7 @@
     <string name="bluetooth_dock_settings_remember" msgid="5551459057010609115">"Memorizar definições"</string>
     <string name="nfc_quick_toggle_title" msgid="6769159366307299004">"NFC"</string>
     <string name="nfc_quick_toggle_summary" msgid="1988408027741447231">"Utilizar Near Field Communication para ler e trocar etiquetas"</string>
-    <!-- no translation found for nfc_toggle_error (2233172102497535522) -->
-    <!-- no translation found for nfc_toggle_error (8998642457947607263) -->
-    <skip />
+    <string name="nfc_toggle_error" msgid="2233172102497535522">"Ocorreu um erro."</string>
     <string name="wifi_quick_toggle_title" msgid="874495178395350104">"Wi-Fi"</string>
     <string name="wifi_quick_toggle_summary" msgid="1047950931623694366">"Activar Wi-Fi"</string>
     <string name="wifi_settings" msgid="4746946030627213196">"Definições de Wi-Fi"</string>
@@ -543,7 +541,7 @@
     <string name="sd_insert_summary" product="default" msgid="2048640010381803841">"Inserir cartão SD para instalação"</string>
     <string name="sd_mount" product="nosdcard" msgid="8966695015677343116">"Montar armazenamento USB"</string>
     <string name="sd_mount" product="default" msgid="5940523765187704135">"Instalar cartão SD"</string>
-    <!-- outdated translation 6733254203291665551 -->     <string name="sd_mount_summary" product="nosdcard" msgid="1794150364965145726">"Montar o armaz. USB interno"</string>
+    <string name="sd_mount_summary" product="nosdcard" msgid="1794150364965145726">"Montar o armazenamento USB"</string>
     <string name="sd_mount_summary" product="default" msgid="4936591681679097699">"Instalar cartão SD"</string>
     <string name="sd_format" product="nosdcard" msgid="2148179271623099054">"Apagar armazenamento USB"</string>
     <string name="sd_format" product="default" msgid="2576054280507119870">"Apagar cartão SD"</string>
@@ -586,6 +584,7 @@
     <string name="apn_auth_type_chap" msgid="3369626283789068360">"CHAP"</string>
     <string name="apn_auth_type_pap_chap" msgid="9102343063036134541">"PAP ou CHAP"</string>
     <string name="apn_type" msgid="469613123902220544">"Tipo APN"</string>
+    <string name="apn_protocol" msgid="3272222921649348640">"Protocolo APN"</string>
     <string name="menu_delete" msgid="6981294422841124659">"Eliminar APN"</string>
     <string name="menu_new" msgid="3014205883303921729">"Novo APN"</string>
     <string name="menu_save" msgid="8109345640668285399">"Guardar"</string>
@@ -1161,4 +1160,8 @@
     <string name="sound_category_calls_title" msgid="3688531959256239012">"Chamadas recebidas"</string>
     <string name="sound_category_notification_title" msgid="3502115998790286943">"Notificações"</string>
     <string name="sound_category_feedback_title" msgid="4399742321363475393">"Comentários"</string>
+    <string name="wimax_settings" msgid="1574837328738396794">"Definições de 4G"</string>
+    <string name="wimax_settings_summary" msgid="3207355006084135453">"Configurar e gerir modem e rede 4G"</string>
+    <string name="status_wimax_mac_address" msgid="8390791848661413416">"Endereço MAC de 4G"</string>
+    <string name="additional_system_update_settings_list_item_title" msgid="214987609894661992">"Atualizações de sistema adicionais"</string>
 </resources>

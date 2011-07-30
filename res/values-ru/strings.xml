@@ -27,7 +27,7 @@
     <string name="radioInfo_menu_getPDP" msgid="560610293888406317">"Получить список PDP"</string>
     <string name="radioInfo_service_in" msgid="1915416319177520020">"В зоне обслуживания"</string>
     <string name="radioInfo_service_out" msgid="5238736759641916278">"Вне зоны обслуживания"</string>
-    <string name="radioInfo_service_emergency" msgid="2485604591272668370">"Только экстренный вызов"</string>
+    <string name="radioInfo_service_emergency" msgid="2485604591272668370">"Только экстренные вызовы"</string>
     <string name="radioInfo_service_off" msgid="1434084741785525415">"Радио отключено"</string>
     <string name="radioInfo_roaming_in" msgid="9045363884600341051">"Роуминг"</string>
     <string name="radioInfo_roaming_not" msgid="2851853244069662307">"Роуминг отключен"</string>
@@ -75,7 +75,7 @@
     <string name="battery_info_status_charging_usb" msgid="4059070156126770959">"(USB)"</string>
     <string name="battery_info_status_discharging" msgid="6222697503392774475">"Разрядка батареи"</string>
     <string name="battery_info_status_not_charging" msgid="2820070506621483576">"Не заряжается"</string>
-    <string name="battery_info_status_full" msgid="2824614753861462808">"Заряжена"</string>
+    <string name="battery_info_status_full" msgid="2824614753861462808">"Батарея заряжена"</string>
     <string name="battery_info_power_unplugged" msgid="5987246575519551081">"Не подключено"</string>
     <string name="battery_info_power_ac" msgid="6808516193001604634">"Питание от сети"</string>
     <string name="battery_info_power_usb" msgid="8012931702516331797">"USB"</string>
@@ -88,7 +88,7 @@
     <string name="battery_info_health_over_voltage" msgid="2420269351664490121">"Слишком высокое напряжение"</string>
     <string name="battery_info_health_unspecified_failure" msgid="6347021103185471590">"Неизвестная ошибка"</string>
     <string name="bluetooth" msgid="5549625000628014477">"Bluetooth"</string>
-    <string name="bluetooth_visibility" msgid="2930835434091839916">"Видимый"</string>
+    <string name="bluetooth_visibility" msgid="2930835434091839916">"Видимость"</string>
     <string name="bluetooth_is_discoverable" msgid="1205694503775884903">"Видимый в течение <xliff:g id="DISCOVERABLE_TIME_PERIOD">%1$s</xliff:g> секунд..."</string>
     <string name="bluetooth_not_discoverable" msgid="128269993123955177">"Сделать устройство видимым"</string>
     <string name="bluetooth_lock_voice_dialing" msgid="3139322992062086225">"Заблокировать голосовой набор"</string>
@@ -122,7 +122,7 @@
     <string name="date_time_24_hour_sample" msgid="8916857570746212357">"13:00"</string>
     <string name="date_time_changeTime_text" msgid="7037437020000867740">"Изменить время"</string>
     <string name="date_time_changeDate_text" msgid="5259762626498028057">"Дата"</string>
-    <string name="choose_timezone" msgid="7762866468013985022">"Выбрать часовой пояс"</string>
+    <string name="choose_timezone" msgid="7762866468013985022">"Выбор часового пояса"</string>
     <string name="normal_date_format" msgid="1982904221918374153">"Обычный (<xliff:g id="DATE">%s</xliff:g>)"</string>
     <string name="display_preview_label" msgid="1127597250917274792">"Предварительный просмотр:"</string>
     <string name="display_font_size_label" msgid="8941851418397475389">"Размер шрифта:"</string>
@@ -190,7 +190,7 @@
     <string name="sdcard_settings_mass_storage_status" product="default" msgid="4786433969313661655">"SD-карта используется в качестве устройства массовой памяти"</string>
     <string name="sdcard_settings_unmounted_status" product="nosdcard" msgid="7503300818792750913">"USB-накопитель можно отключить"</string>
     <string name="sdcard_settings_unmounted_status" product="default" msgid="3812022095683863087">"SD-карта может быть извлечена"</string>
-    <string name="sdcard_settings_bad_removal_status" product="nosdcard" msgid="7761390725880773697">"Накопитель извлечен во время использования!"</string>
+    <string name="sdcard_settings_bad_removal_status" product="nosdcard" msgid="7761390725880773697">"Накопитель извлечен при исп.!"</string>
     <string name="sdcard_settings_bad_removal_status" product="default" msgid="5145797653495907970">"SD-карта была извлечена во время использования!"</string>
     <string name="sdcard_settings_used_bytes_label" msgid="8820289486001170836">"Использовано байтов:"</string>
     <string name="sdcard_settings_scanning_status" product="nosdcard" msgid="7503429447676219564">"Сканирование USB-накопителя..."</string>
@@ -230,14 +230,14 @@
     <string name="sum_carrier_select" msgid="6648929373316748020">"Выберите оператора связи"</string>
     <string name="date_and_time_settings_title" msgid="3350640463596716780">"Дата и время"</string>
     <string name="date_and_time_settings_summary" msgid="2435705040205950381">"Установка даты, времени, часового пояса и форматов"</string>
-    <string name="date_time_auto" msgid="3086083265745944725">"Автоматически"</string>
+    <string name="date_time_auto" msgid="3086083265745944725"></string>
     <string name="date_time_auto_summaryOn" msgid="9034585614665299846">"Использовать данные, предоставленные сетью"</string>
     <string name="date_time_auto_summaryOff" msgid="3900356736797266448">"Использовать данные, предоставленные сетью"</string>
     <string name="date_time_24hour" msgid="1193032284921000063">"24-часовой формат"</string>
-    <string name="date_time_set_time" msgid="5716856602742530696">"Настроить время"</string>
-    <string name="date_time_set_timezone" msgid="5045627174274377814">"Выбрать часовой пояс"</string>
-    <string name="date_time_set_date" msgid="7021491668550232105">"Настроить дату"</string>
-    <string name="date_time_date_format" msgid="436706100255870967">"Выбрать формат даты"</string>
+    <string name="date_time_set_time" msgid="5716856602742530696">"Время"</string>
+    <string name="date_time_set_timezone" msgid="5045627174274377814">"Часовой пояс"</string>
+    <string name="date_time_set_date" msgid="7021491668550232105">"Дата"</string>
+    <string name="date_time_date_format" msgid="436706100255870967">"Формат даты"</string>
     <string name="zone_list_menu_sort_alphabetically" msgid="5683377702671088588">"Упорядочить по алфавиту"</string>
     <string name="zone_list_menu_sort_by_timezone" msgid="2720190443744884114">"Упорядочить по часовому поясу"</string>
     <string name="security_settings_title" msgid="5168491784222013179">"Местоположение и защита"</string>
@@ -334,17 +334,15 @@
     <string name="bluetooth_dock_settings_a2dp" msgid="8791004998846630574">"Для музыки и мультимедиа"</string>
     <string name="bluetooth_dock_settings_remember" msgid="5551459057010609115">"Запомнить настройки"</string>
     <string name="nfc_quick_toggle_title" msgid="6769159366307299004">"Включить NFC"</string>
-    <string name="nfc_quick_toggle_summary" msgid="1988408027741447231">"Использовать радиосвязь ближнего действия для чтения и обмена метками"</string>
-    <!-- no translation found for nfc_toggle_error (2233172102497535522) -->
-    <!-- no translation found for nfc_toggle_error (8998642457947607263) -->
-    <skip />
+    <string name="nfc_quick_toggle_summary" msgid="1988408027741447231">"Использовать радиосвязь ближнего действия для чтения и обмена тегами"</string>
+    <string name="nfc_toggle_error" msgid="2233172102497535522">"Произошла ошибка."</string>
     <string name="wifi_quick_toggle_title" msgid="874495178395350104">"Wi-Fi"</string>
     <string name="wifi_quick_toggle_summary" msgid="1047950931623694366">"Включить Wi-Fi"</string>
     <string name="wifi_settings" msgid="4746946030627213196">"Настройки Wi-Fi"</string>
     <string name="wifi_settings_category" msgid="2810363951104753710">"Настройки Wi-Fi"</string>
     <string name="wifi_settings_summary" msgid="668767638556052820">"Настройка и управление точками доступа беспроводной сети"</string>
     <string name="wifi_starting" msgid="6710266609710860129">"Включение..."</string>
-    <string name="wifi_stopping" msgid="5952909472548218348">"Выключение..."</string>
+    <string name="wifi_stopping" msgid="5952909472548218348">"Отключение..."</string>
     <string name="wifi_error" msgid="3207971103917128179">"Ошибка"</string>
     <string name="wifi_in_airplane_mode" msgid="7618393787965366655">"В режиме полета"</string>
     <string name="wifi_fail_to_scan" msgid="6194542252808587669">"Не удалось выполнить поиск сети"</string>
@@ -375,7 +373,7 @@
     <string name="wifi_unspecified" msgid="5431501214192991253">"(не указано)"</string>
     <string name="wifi_remembered" msgid="8426719916135950136">"Сохранено в памяти"</string>
     <string name="wifi_disabled" msgid="2104752038187543712">"Отключено"</string>
-    <string name="wifi_not_in_range" msgid="1136191511238508967">"Вне диапазона"</string>
+    <string name="wifi_not_in_range" msgid="1136191511238508967">"Недоступна"</string>
     <string name="wifi_secured" msgid="6759903183748011566">"Защищено с помощью <xliff:g id="WIFI_SECURITY">%1$s</xliff:g>"</string>
     <string name="wifi_secured_with_status" msgid="6489317496506267302">"<xliff:g id="WIFI_STATUS">%2$s</xliff:g>, защищено с помощью <xliff:g id="WIFI_SECURITY">%1$s</xliff:g>"</string>
     <string name="wifi_connect" msgid="1076622875777072845">"Подключить"</string>
@@ -383,9 +381,9 @@
     <string name="wifi_save" msgid="3331121567988522826">"Сохранить"</string>
     <string name="wifi_cancel" msgid="6763568902542968964">"Отмена"</string>
     <string name="wifi_advanced_titlebar" msgid="5419052271935350999">"Дополнительные функции"</string>
-    <string name="wifi_setting_num_channels_title" msgid="694031537019656132">"Управляющий домен"</string>
+    <string name="wifi_setting_num_channels_title" msgid="694031537019656132">"Диапазон частот"</string>
     <string name="wifi_setting_num_channels_summary" msgid="4889355096717099141">"Настроить количество используемых каналов"</string>
-    <string name="wifi_setting_num_channels_error" msgid="5765443843427870721">"При установке управляющего домена возникла неполадка."</string>
+    <string name="wifi_setting_num_channels_error" msgid="5765443843427870721">"При установке диапазона частот возникла неполадка."</string>
     <string name="wifi_setting_num_channels_channel_phrase" msgid="1269381923672908636">"каналов: <xliff:g id="NUM_CHANNELS">%1$d</xliff:g>"</string>
     <string name="wifi_setting_sleep_policy_title" msgid="1367731352485585528">"Спящий режим"</string>
     <string name="wifi_setting_sleep_policy_summary" msgid="7573693311804602041">"При каких условиях переключаться с Wi-Fi на сотовую сеть"</string>
@@ -455,7 +453,7 @@
     <string name="dock_settings_title" msgid="9161438664257429372">"Настройки док-станции"</string>
     <string name="dock_audio_settings_title" msgid="3324750259959570305">"Аудио"</string>
     <string name="dock_audio_summary_desk" msgid="6487784412371139335">"Настройки подключенной настольной док-станции"</string>
-    <string name="dock_audio_summary_car" msgid="6740897586006248450">"Настройки подключенной автомобильной док-станции"</string>
+    <string name="dock_audio_summary_car" msgid="6740897586006248450">"Настройки док-станции автомобиля"</string>
     <string name="dock_audio_summary_none" msgid="289909253741048784">"Телефон не подключен к док-станции"</string>
     <string name="dock_audio_summary_unknown" msgid="4465059868974255693">"Настройки подключенной док-станции"</string>
     <string name="dock_not_found_title" msgid="3290961741828952424">"Док-станция не найдена."</string>
@@ -478,7 +476,7 @@
     <string name="brightness_summary" msgid="838917350127550703">"Настроить яркость экрана"</string>
     <string name="screen_timeout" msgid="4882669461447531301">"Автоотключение экрана"</string>
     <string name="screen_timeout_summary" msgid="2905757633140605334">"Интервал времени до автоматического отключения экрана"</string>
-    <string name="automatic_brightness" msgid="5014143533884135461">"Яркость автоматически"</string>
+    <string name="automatic_brightness" msgid="5014143533884135461">"Автонастройка"</string>
     <string name="sim_lock_settings" msgid="3392331196873564292">"Настройки блокировки SIM-карты"</string>
     <string name="sim_lock_settings_category" msgid="5136244267576697004">"Настроить блокировку"</string>
     <string name="sim_lock_settings_title" msgid="9018585580955414596">"Блокировка SIM-карты"</string>
@@ -538,17 +536,17 @@
     <string name="memory_size" msgid="6629067715017232195">"Всего места"</string>
     <string name="sd_eject" product="default" msgid="6915293408836853020">"Извлечь SD-карту"</string>
     <string name="sd_eject_summary" product="nosdcard" msgid="5009296896648072891">"Отключить внутр. USB-накопитель"</string>
-    <string name="sd_eject_summary" product="default" msgid="3300599435073550246">"Отключить SD-карту для безопасного извлечения"</string>
-    <string name="sd_insert_summary" product="nosdcard" msgid="5264016886409577313">"Вставить USB-накопитель для подключения"</string>
+    <string name="sd_eject_summary" product="default" msgid="3300599435073550246">"Отключение SD-карты для ее безопасного извлечения из устройства"</string>
+    <string name="sd_insert_summary" product="nosdcard" msgid="5264016886409577313">"Вставить USB-накопитель"</string>
     <string name="sd_insert_summary" product="default" msgid="2048640010381803841">"Вставьте SD-карту для подключения"</string>
     <string name="sd_mount" product="nosdcard" msgid="8966695015677343116">"Подключить USB-накопитель"</string>
     <string name="sd_mount" product="default" msgid="5940523765187704135">"Подключить SD-карту"</string>
-    <!-- outdated translation 6733254203291665551 -->     <string name="sd_mount_summary" product="nosdcard" msgid="1794150364965145726">"Подключить внутр. USB-накопитель"</string>
+    <string name="sd_mount_summary" product="nosdcard" msgid="1794150364965145726">"Подключить USB-накопитель"</string>
     <string name="sd_mount_summary" product="default" msgid="4936591681679097699">"Подключить SD-карту"</string>
     <string name="sd_format" product="nosdcard" msgid="2148179271623099054">"Очистить USB-накопитель"</string>
     <string name="sd_format" product="default" msgid="2576054280507119870">"Очистить SD-карту"</string>
-    <string name="sd_format_summary" product="nosdcard" msgid="1504606546865152514">"Удаляет все данные с внутреннего USB-накопителя телефона, такие как музыка и фотографии"</string>
-    <string name="sd_format_summary" product="default" msgid="915849621390821841">"Удаляет все данные с SD-карты телефона, например музыку и фотографии"</string>
+    <string name="sd_format_summary" product="nosdcard" msgid="1504606546865152514">"Удаление с внутреннего USB-накопителя телефона всех данных, включая музыку и фотографии"</string>
+    <string name="sd_format_summary" product="default" msgid="915849621390821841">"Удаление с SD-карты всех данных, включая музыку и фотографии"</string>
     <string name="sd_unavailable" msgid="8580107589533213904">"Недоступно"</string>
     <string name="read_only" msgid="6702420168629076340">" (только для чтения)"</string>
     <string name="dlg_confirm_unmount_title" product="nosdcard" msgid="2349876662428231297">"Отключить USB-накопитель"</string>
@@ -586,6 +584,7 @@
     <string name="apn_auth_type_chap" msgid="3369626283789068360">"CHAP"</string>
     <string name="apn_auth_type_pap_chap" msgid="9102343063036134541">"PAP или CHAP"</string>
     <string name="apn_type" msgid="469613123902220544">"Тип APN"</string>
+    <string name="apn_protocol" msgid="3272222921649348640">"Протокол APN"</string>
     <string name="menu_delete" msgid="6981294422841124659">"Удалить APN"</string>
     <string name="menu_new" msgid="3014205883303921729">"Новая точка доступа"</string>
     <string name="menu_save" msgid="8109345640668285399">"Сохранить"</string>
@@ -599,12 +598,12 @@
     <string name="menu_restore" msgid="8260067415075573273">"Восстановить настройки по умолчанию"</string>
     <string name="restore_default_apn_completed" msgid="3990449939234957281">"Восстановление настроек APN по умолчанию завершено"</string>
     <string name="master_clear_title" msgid="5907939616087039756">"Сброс настроек"</string>
-    <string name="master_clear_summary" msgid="4986154238001088492">"Удаляет все данные из памяти телефона"</string>
+    <string name="master_clear_summary" msgid="4986154238001088492">"Возврат к заводским настройкам и удаление всех данных из памяти телефона"</string>
     <string name="master_clear_desc" product="nosdcard" msgid="2163013814299528247">"Это приведет к удалению всех данных с "<b>"внутреннего накопителя"</b>" телефона, включая:"\n\n<li>"ваш аккаунт Google;"</li>\n<li>"данные и настройки системы и приложений;"</li>\n<li>"загруженные приложения."</li>\n\n"Чтобы удалить все данные с этого телефона, необходимо очистить "<b>"USB-накопитель"</b>"."\n\n</string>
     <string name="master_clear_desc" product="default" msgid="1741944496458365969">"Это приведет к удалению всех данных с "<b>"внутреннего накопителя"</b>" телефона, включая:"\n\n<li>"ваш аккаунт Google;"</li>\n<li>"данные и настройки системы и приложений;"</li>\n<li>"загруженные приложения."</li>\n\n"Чтобы удалить музыку, изображения и другие пользовательские данные, необходимо очистить "<b>"SD-карту"</b>"."\n\n</string>
     <string name="erase_external_storage" product="nosdcard" msgid="969364037450286809">"Очистить USB-накопитель"</string>
     <string name="erase_external_storage" product="default" msgid="1397239046334307625">"Очистить SD-карту"</string>
-    <string name="erase_external_storage_description" product="nosdcard" msgid="1657838142707381027">"Очищать внутренний накопитель."</string>
+    <string name="erase_external_storage_description" product="nosdcard" msgid="1657838142707381027">"Удалить все данные, включая аудио- и фотофайлы, из USB-памяти телефона."</string>
     <string name="erase_external_storage_description" product="default" msgid="8100175974635894073">"Удаляет все данные на SD-карте телефона, например музыку и фотографии."</string>
     <string name="master_clear_button_text" msgid="7550632653343157971">"Сбросить настройки телефона"</string>
     <string name="master_clear_final_desc" msgid="6917971132484622696">"Стереть всю личную информацию и загруженные приложения? Это действие нельзя отменить!"</string>
@@ -615,7 +614,7 @@
     <string name="media_format_title" product="nosdcard" msgid="3999653431422767156">"Очистить USB-накопитель"</string>
     <string name="media_format_title" product="default" msgid="4427528440306787972">"Очистить SD-карту"</string>
     <string name="media_format_summary" product="nosdcard" msgid="776603298628082065">"Уничтожает все данные на USB-накопителе"</string>
-    <string name="media_format_summary" product="default" msgid="3805714639375830120">"Удаляет все данные с карты SD"</string>
+    <string name="media_format_summary" product="default" msgid="3805714639375830120">"Удаление всех данных с SD-карты"</string>
     <string name="media_format_desc" product="nosdcard" msgid="4553860683952763905">"Это приведет к очистке USB-накопителя. Вы потеряете "<b>"все"</b>" хранящиеся на нем данные!"</string>
     <string name="media_format_desc" product="default" msgid="1598627584181935513">"Это приведет к очистке SD-карты. Вы потеряете "<b>"все"</b>" данные на карте!"</string>
     <string name="media_format_button_text" product="nosdcard" msgid="6293669371185352810">"Очистить USB-накопитель"</string>
@@ -643,7 +642,7 @@
     <string name="usb_tethering_errored_subtext" msgid="1377574819427841992">"Ошибка подключения USB"</string>
     <string name="tethering_help_button_text" msgid="656117495547173630">"Справка"</string>
     <string name="network_settings_title" msgid="7967552516440151852">"Мобильная сеть"</string>
-    <string name="network_settings_summary" msgid="5149750850846813553">"Настроить параметры роуминга, сетей, точек доступа (APN)"</string>
+    <string name="network_settings_summary" msgid="5149750850846813553">"Настройка параметров роуминга, сетей и точек доступа (APN)"</string>
     <string name="location_title" msgid="1029961368397484576">"Мое местоположение"</string>
     <string name="location_network_based" msgid="8815705866861993344">"Беспроводные сети"</string>
     <string name="location_networks_disabled" msgid="2708968452901433980">"Использовать Wi-Fi и сотовые сети для определения местоположения"</string>
@@ -715,7 +714,7 @@
     <string name="manageapplications_settings_summary" msgid="6097117021500651232">"Управление установленными приложениями и их удаление"</string>
     <string name="applications_settings" msgid="3736173521008476946">"Приложения"</string>
     <string name="applications_settings_summary" msgid="2714215108369119717">"Управление приложениями, настройка клавиш быстрого запуска"</string>
-    <string name="applications_settings_header" msgid="6018266337275422250">"Настройки приложения"</string>
+    <string name="applications_settings_header" msgid="6018266337275422250">"Настройки приложений"</string>
     <string name="install_applications" msgid="4872012136210802181">"Неизвестные источники"</string>
     <string name="install_unknown_applications" msgid="6612824788917283662">"Разрешить установку приложений, полученных не из Маркета"</string>
     <string name="install_all_warning" msgid="1923717607319933741">"Телефон и личные сведения более уязвимы к атакам приложений из неизвестных источников. Вы подтверждаете, что берете на себя всю ответственность в случае повреждения телефона и потери данных при использовании этих приложений."</string>
@@ -755,7 +754,7 @@
     <string name="disabled" msgid="9206776641295849915">"Отключено"</string>
     <string name="no_applications" msgid="5190227407135243904">"Нет приложений."</string>
     <string name="internal_storage" msgid="1584700623164275282">"Внутренний накопитель"</string>
-    <string name="sd_card_storage" product="nosdcard" msgid="2673203150465132465">"USB-накопитель"</string>
+    <string name="sd_card_storage" product="nosdcard" msgid="2673203150465132465">"USB-память"</string>
     <string name="sd_card_storage" product="default" msgid="7623513618171928235">"SD-карта"</string>
     <string name="recompute_size" msgid="7722567982831691718">"Повторное вычисление размера..."</string>
     <string name="clear_data_dlg_title" msgid="4470209520936375508">"Удалить"</string>
@@ -790,10 +789,10 @@
     <string name="move_app_failed_dlg_text" msgid="8824246817947643697">"Не удалось переместить приложение. <xliff:g id="REASON">%1$s</xliff:g>"</string>
     <string name="app_install_location_title" msgid="2068975150026852168">"Место установки"</string>
     <string name="app_install_location_summary" msgid="879753854530300436">"Изменить установочную папку для новых приложений."</string>
-    <string name="storageuse_settings_title" msgid="5657014373502630403">"Использование хранилища"</string>
-    <string name="storageuse_settings_summary" msgid="2556057379120846792">"Хранилище, используемое приложениями"</string>
-    <string name="runningservices_settings_title" msgid="8097287939865165213">"Работающие программы"</string>
-    <string name="runningservices_settings_summary" msgid="854608995821032748">"Просмотр и управление работающими программами"</string>
+    <string name="storageuse_settings_title" msgid="5657014373502630403">"Использование памяти"</string>
+    <string name="storageuse_settings_summary" msgid="2556057379120846792">"Объем памяти, занимаемый различными приложениями"</string>
+    <string name="runningservices_settings_title" msgid="8097287939865165213">"Работающие приложения"</string>
+    <string name="runningservices_settings_summary" msgid="854608995821032748">"Просмотр и управление работающими приложениями"</string>
     <string name="service_restarting" msgid="2242747937372354306">"Перезапуск"</string>
     <string name="cached" msgid="1059590879740175019">"Кэшированный фоновый процесс"</string>
     <string name="no_running_services" msgid="2059536495597645347">"Ничего не запущено."</string>
@@ -875,8 +874,8 @@
     <string name="enable_adb_summary" msgid="4881186971746056635">"Включить режим отладки при подключении к компьютеру по USB"</string>
     <string name="keep_screen_on" msgid="1146389631208760344">"Оставить включенным"</string>
     <string name="keep_screen_on_summary" msgid="2173114350754293009">"Во время зарядки экран будет всегда включен"</string>
-    <string name="allow_mock_location" msgid="2787962564578664888">"Отладка местоположения"</string>
-    <string name="allow_mock_location_summary" msgid="317615105156345626">"Разрешить получение отладочных данных о местоположении"</string>
+    <string name="allow_mock_location" msgid="2787962564578664888">"Фиктивные местоположения"</string>
+    <string name="allow_mock_location_summary" msgid="317615105156345626">"Разрешить использование фиктивных местоположений"</string>
     <string name="adb_warning_title" msgid="6234463310896563253">"Разрешить отладку USB?"</string>
     <string name="adb_warning_message" msgid="5352555112049663033">"Отладка по USB предназначена для целей разработки. С ее помощью можно копировать данные с компьютера на мобильное устройство и наборот, устанавливать на устройство приложения и просматривать данные журналов."</string>
     <string name="gadget_picker_title" msgid="98374951396755811">"Выбор·гаджета"</string>
@@ -992,7 +991,7 @@
     <string name="tts_default_pitch_title" msgid="6135942113172488671">"Тон"</string>
     <string name="tts_default_pitch_summary" msgid="1328298665182885277">"Влияет на высоту синтезированной речи"</string>
     <string name="tts_default_lang_title" msgid="8018087612299820556">"Язык"</string>
-    <string name="tts_default_lang_summary" msgid="5219362163902707785">"Установить в зависимости от языка голос для чтения текста"</string>
+    <string name="tts_default_lang_summary" msgid="5219362163902707785">"Выбор языка для чтения текста"</string>
     <string name="tts_play_example_title" msgid="7094780383253097230">"Прослушать пример"</string>
     <string name="tts_play_example_summary" msgid="8029071615047894486">"Воспроизвести краткую демонстрацию синтезированной речи"</string>
     <string name="tts_install_data_title" msgid="4264378440508149986">"Установка голосовых данных"</string>
@@ -1054,7 +1053,7 @@
     <string name="vpn_ppp_negotiation_failed_dialog_msg" msgid="4611293656718340994">"Связь с сервером не установлена. Возможно, не были согласованы параметры шифрования. Изменить настройки шифрования?"</string>
     <string name="vpn_type_title" msgid="6392933604218676224">"Добавить VPN"</string>
     <string name="vpn_add_new_vpn" msgid="5438260689052714550">"Добавить VPN"</string>
-    <string name="vpn_edit_title_add" msgid="2121313217989682890">"Добавить VPN \"<xliff:g id="NAME">%s</xliff:g>\""</string>
+    <string name="vpn_edit_title_add" msgid="2121313217989682890">"Добавить <xliff:g id="NAME">%s</xliff:g> VPN"</string>
     <string name="vpn_edit_title_edit" msgid="2457278794066617935">"Сведения: <xliff:g id="NAME">%s</xliff:g>"</string>
     <string name="vpns" msgid="3148141862835492816">"Сети VPN"</string>
     <string name="vpn_connecting" msgid="8039521381692090116">"Подключение..."</string>
@@ -1065,40 +1064,40 @@
     <string name="vpn_a_name" msgid="8445736942405283509">"имя VPN"</string>
     <string name="vpn_profile_added" msgid="9061017910337129840">"Профиль \"<xliff:g id="NAME">%s</xliff:g>\" добавлен"</string>
     <string name="vpn_profile_replaced" msgid="587435576816273815">"В профиль \"<xliff:g id="NAME">%s</xliff:g>\" внесены изменения"</string>
-    <string name="vpn_user_certificate_title" msgid="6812545893924071742">"Установить СП"</string>
+    <string name="vpn_user_certificate_title" msgid="6812545893924071742">"Сертификат пользователя"</string>
     <string name="vpn_user_certificate" msgid="949322691686938888">"Сертификат пользователя"</string>
     <string name="vpn_a_user_certificate" msgid="8943983437956898649">"сертификат пользователя"</string>
-    <string name="vpn_ca_certificate_title" msgid="7846466160795589985">"Установить СЦС"</string>
+    <string name="vpn_ca_certificate_title" msgid="7846466160795589985">"Сертификат ЦС"</string>
     <string name="vpn_ca_certificate" msgid="465085144064264742">"Сертификат центра сертификации"</string>
     <string name="vpn_a_ca_certificate" msgid="3374242520974884295">"сертификат центра сертификации"</string>
     <string name="vpn_l2tp_secret_string_title" msgid="5039677186748940987">"Установить ключ L2TP"</string>
-    <string name="vpn_l2tp_secret" msgid="529359749677142076">"ключ L2TP"</string>
+    <string name="vpn_l2tp_secret" msgid="529359749677142076">"Ключ L2TP"</string>
     <string name="vpn_a_l2tp_secret" msgid="6612042930810981845">"ключ L2TP"</string>
     <string name="vpn_pptp_encryption_title" msgid="2236795167467896499">"шифрование"</string>
     <string name="vpn_pptp_encryption" msgid="2602329949737259686">"Шифрование PPTP"</string>
-    <string name="vpn_ipsec_presharedkey_title" msgid="2184060087690539175">"Установить совместно используемый ключ IPSec"</string>
-    <string name="vpn_ipsec_presharedkey" msgid="5434316521616673741">"Совместно используемый ключ IPSec"</string>
-    <string name="vpn_a_ipsec_presharedkey" msgid="1255301923217898418">"совместно используемый ключ IPSec"</string>
-    <string name="vpn_vpn_server_title" msgid="8897005887420358913">"Укажите сервер VPN"</string>
+    <string name="vpn_ipsec_presharedkey_title" msgid="2184060087690539175">"Общий ключ IPSec"</string>
+    <string name="vpn_ipsec_presharedkey" msgid="5434316521616673741">"Общий ключ IPSec"</string>
+    <string name="vpn_a_ipsec_presharedkey" msgid="1255301923217898418">"общий ключ IPSec"</string>
+    <string name="vpn_vpn_server_title" msgid="8897005887420358913">"Cервер VPN"</string>
     <string name="vpn_vpn_server" msgid="1141754908824209260">"Сервер VPN"</string>
     <string name="vpn_a_vpn_server" msgid="5960906152125045853">"сервер VPN"</string>
     <string name="vpn_vpn_server_dialog_title" msgid="7850850940160521918">"Имя сервера VPN"</string>
-    <string name="vpn_dns_search_list_title" msgid="1022776976104584251">"Домены поиска DNS"</string>
+    <string name="vpn_dns_search_list_title" msgid="1022776976104584251">"DNS-суффиксы"</string>
     <string name="vpn_dns_search_list" msgid="4230034234026605360">"DNS поиска"</string>
     <string name="vpn_field_is_set" msgid="7137320847812992243">"<xliff:g id="VALUE">%s</xliff:g> установлено"</string>
-    <string name="vpn_field_not_set" msgid="2972519243515893804">"<xliff:g id="VALUE">%s</xliff:g> не установлено"</string>
+    <string name="vpn_field_not_set" msgid="2972519243515893804">"<xliff:g id="VALUE">%s</xliff:g> — не установлено"</string>
     <string name="vpn_field_not_set_optional" msgid="8840557698252556791">"<xliff:g id="VALUE">%s</xliff:g> не установлено (необязательно)"</string>
     <string name="vpn_enable_field" msgid="3700967675854517191">"Включить <xliff:g id="OPTION">%s</xliff:g>"</string>
     <string name="vpn_disable_field" msgid="6905658811179634005">"Отключить <xliff:g id="OPTION">%s</xliff:g>"</string>
-    <string name="vpn_is_enabled" msgid="1266304230417098877">"<xliff:g id="OPTION">%s</xliff:g> вкл."</string>
-    <string name="vpn_is_disabled" msgid="2013622485867806167">"<xliff:g id="OPTION">%s</xliff:g> откл."</string>
+    <string name="vpn_is_enabled" msgid="1266304230417098877">"<xliff:g id="OPTION">%s</xliff:g> – включено"</string>
+    <string name="vpn_is_disabled" msgid="2013622485867806167">"<xliff:g id="OPTION">%s</xliff:g> – отключено"</string>
     <string name="vpn_settings_title" msgid="7327468307909556719">"Настройки VPN"</string>
     <string name="vpn_settings_summary" msgid="8849924181594963972">"Настройка и управление виртуальными частными сетями (VPN)"</string>
     <string name="vpn_secret_unchanged" msgid="8700613973594154529">"(не изменялось)"</string>
     <string name="vpn_secret_not_set" msgid="1037792636371641845">"(не настроено)"</string>
     <string name="credentials_category" msgid="8536992056377271234">"Хранилище регистрационных данных"</string>
     <string name="credentials_access" msgid="4843187230913860492">"Доступ к хранилищу"</string>
-    <string name="credentials_access_summary" msgid="319662078718574168">"Разрешить приложениям использовать хранилище сертификатов и рег. данных"</string>
+    <string name="credentials_access_summary" msgid="319662078718574168">"Разрешить приложениям использовать хранилище сертификатов и учет. данных"</string>
     <string name="credentials_unlock" msgid="1463040326264133844">"Ввод пароля"</string>
     <string name="credentials_unlock_hint" msgid="594679530407918031">"Введите пароль для доступа в хранилище регистрационных данных."</string>
     <string name="credentials_install_certificates" product="nosdcard" msgid="619171634797689906">"Устанавливать с накопителя"</string>
@@ -1109,7 +1108,7 @@
     <string name="credentials_set_password_summary" msgid="8287876917562085701">"Установить или изменить пароль для доступа в хранилище рег. данных"</string>
     <string name="credentials_reset" msgid="9170150870552453457">"Очистить хранилище"</string>
     <string name="credentials_reset_summary" msgid="1530388094693731636">"Очистить все регистрационные данные в хранилище и сбросить пароль"</string>
-    <string name="credentials_reset_hint" msgid="819990295796804516">"Вы действительно хотите удалить все регистрационные данные и сбросить пароль для доступа в хранилище регистрационных данных?"</string>
+    <string name="credentials_reset_hint" msgid="819990295796804516">"Вы действительно хотите удалить все учетные данные и сбросить пароль для доступа в хранилище учетных данных?"</string>
     <string name="credentials_old_password" msgid="7553393815538684028">"Текущий пароль:"</string>
     <string name="credentials_new_password" msgid="267487774686796938">"Новый пароль:"</string>
     <string name="credentials_confirm_password" msgid="4732250000633424345">"Подтвердите новый пароль:"</string>
@@ -1136,14 +1135,14 @@
     <string name="encrypted_fs_alert_dialog_title" msgid="583462447886934755">"Предупреждение для зашифрованных файловых систем"</string>
     <string name="emergency_tone_title" msgid="1055954530111587114">"Тональный сигнал экстренного вызова"</string>
     <string name="emergency_tone_summary" msgid="722259232924572153">"Настроить режим работы при экстренном вызове"</string>
-    <string name="privacy_settings" msgid="9206631214140954954">"Конфиденциальность"</string>
-    <string name="privacy_settings_title" msgid="1987089301293213705">"Настройки конфиденциальности"</string>
+    <string name="privacy_settings" msgid="9206631214140954954">"Восстановление и сброс"</string>
+    <string name="privacy_settings_title" msgid="1987089301293213705">"Восстановление данных и настроек"</string>
     <string name="backup_section_title" msgid="8856083167469467588">"Резервное копирование и восстановление"</string>
-    <string name="personal_data_section_title" msgid="7815209034443782061">"Личные данные"</string>
+    <string name="personal_data_section_title" msgid="7815209034443782061">"Возврат к заводским настройкам"</string>
     <string name="backup_data_title" msgid="1239105919852668016">"Резервное копирование данных"</string>
-    <string name="backup_data_summary" msgid="6515285107793232815">"Резервное копирование данных приложений, паролей Wi-Fi и других настроек в Google"</string>
+    <string name="backup_data_summary" msgid="6515285107793232815">"Сохранять резервные копии данных приложений, паролей точек доступа Wi-Fi и настроек на серверах Google"</string>
     <string name="auto_restore_title" msgid="5397528966329126506">"Автовосстановление"</string>
-    <string name="auto_restore_summary" msgid="83177150536734378">"При переустановке приложения восстановить резервные копии настроек и других данных"</string>
+    <string name="auto_restore_summary" msgid="83177150536734378">"При переустановке приложений автоматически восстанавливать данные и настройки из резервных копий"</string>
     <string name="backup_erase_dialog_title" msgid="3438255037256586237">"Резервное копирование"</string>
     <string name="backup_erase_dialog_message" msgid="7766283133557587608">"Вы уверены, что хотите прекратить создавать резервные копии паролей Wi-Fi, закладок, настроек и данных приложений и удалить все копии с серверов Google?"</string>
     <string name="device_admin_settings_title" msgid="1335557832906433309">"Настройки администрирования устройства"</string>
@@ -1161,4 +1160,8 @@
     <string name="sound_category_calls_title" msgid="3688531959256239012">"Входящие вызовы"</string>
     <string name="sound_category_notification_title" msgid="3502115998790286943">"Оповещения"</string>
     <string name="sound_category_feedback_title" msgid="4399742321363475393">"Отклик на действия"</string>
+    <string name="wimax_settings" msgid="1574837328738396794">"Настройки 4G"</string>
+    <string name="wimax_settings_summary" msgid="3207355006084135453">"Подключение и настройка сети и модема 4G"</string>
+    <string name="status_wimax_mac_address" msgid="8390791848661413416">"МАС-адрес для 4G"</string>
+    <string name="additional_system_update_settings_list_item_title" msgid="214987609894661992">"Дополнительные обновления системы"</string>
 </resources>
