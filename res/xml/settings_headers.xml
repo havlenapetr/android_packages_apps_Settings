@@ -97,8 +97,8 @@
 
     <!-- Manufacturer hook -->
     <header
-        android:fragment="com.android.settings.WirelessSettings"
-        android:id="@+id/manufacturer_settings">
+        android:id="@+id/manufacturer_settings"
+        android:icon="@drawable/ic_settings_development">
         <intent android:action="com.android.settings.MANUFACTURER_APPLICATION_SETTING" />
     </header>
 
