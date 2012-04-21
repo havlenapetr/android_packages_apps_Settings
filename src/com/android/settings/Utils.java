@@ -236,12 +236,15 @@ public class Utils {
                     try {
                         Resources res = pm.getResourcesForApplication(
                                 resolveInfo.activityInfo.packageName);
-                        Bundle metaData = resolveInfo.activityInfo.metaData;
+                        Bundle metaData = header.extras = resolveInfo.activityInfo.metaData;
 
                         if (res != null && metaData != null) {
-                            icon = res.getDrawable(metaData.getInt(META_DATA_PREFERENCE_ICON));
-                            title = res.getString(metaData.getInt(META_DATA_PREFERENCE_TITLE));
-                            summary = res.getString(metaData.getInt(META_DATA_PREFERENCE_SUMMARY));
+                            int id = metaData.getInt(META_DATA_PREFERENCE_ICON, 0);
+                            if(id != 0) icon = res.getDrawable(id);
+                            id = metaData.getInt(META_DATA_PREFERENCE_TITLE, 0);
+                            if(id != 0) title = res.getString(id);
+                            id = metaData.getInt(META_DATA_PREFERENCE_SUMMARY, 0);
+                            if(id != 0) summary = res.getString(id);
                         }
                     } catch (NameNotFoundException e) {
                         // Ignore
