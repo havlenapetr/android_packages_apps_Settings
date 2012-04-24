@@ -85,6 +85,17 @@
                 android:targetClass="com.android.settings.ApplicationSettings" />
         </com.android.settings.IconPreferenceScreen>
 
+        <!-- Manufacturer hook. The settings activity will ensure this is resolved to an
+             activity on the system image, otherwise it will remove this
+             preference. -->
+
+        <com.android.settings.IconPreferenceScreen
+            settings:icon="@drawable/ic_settings_privacy"
+            android:title="@string/manufacturer_settings"
+            android:key="manufacturer_settings">
+            <intent android:action="com.android.settings.MANUFACTURER_APPLICATION_SETTING" />
+        </com.android.settings.IconPreferenceScreen>
+
         <!-- Data Sync. The settings activity will ensure this is resolved to an
              activity on the system image, otherwise it will remove this
              preference. -->
