@@ -104,6 +104,12 @@
     <item msgid="7981731051382306293">"TLS"</item>
     <item msgid="2892994535305020162">"TTLS"</item>
   </string-array>
+  <string-array name="bluetooth_visibility_timeout_entries">
+    <item msgid="1106621950288502195">"2 Minuten"</item>
+    <item msgid="5780349442819375570">"5 Minuten"</item>
+    <item msgid="1166466894270177580">"1 Stunde"</item>
+    <item msgid="9032073376232198148">"Nie"</item>
+  </string-array>
   <string-array name="wifi_signal">
     <item msgid="2245412278046491293">"Schwach"</item>
     <item msgid="5615082285463430971">"Gut"</item>
@@ -112,8 +118,8 @@
   </string-array>
   <string-array name="wifi_sleep_policy_entries">
     <item msgid="3804733751095821976">"Wenn Bildschirm sich abschaltet"</item>
-    <item msgid="1549288661423279207">"Niemals, wenn im Netzbetrieb"</item>
-    <item msgid="1986753720941888596">"Niemals"</item>
+    <item msgid="1549288661423279207">"Nie, wenn im Netzbetrieb"</item>
+    <item msgid="1986753720941888596">"Nie"</item>
   </string-array>
   <string-array name="usage_stats_display_order_types">
     <item msgid="9077371706468756228">"Nutzungszeit"</item>
