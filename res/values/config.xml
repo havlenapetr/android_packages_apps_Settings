@@ -29,4 +29,7 @@
          very long strings too. -->
     <integer name="maximum_user_dictionary_word_length" translatable="false">48</integer>
 
+    <!-- Ad-hoc network support. Some devices (unpatched bcmdhd) have broken
+         ad-hoc support and so we should hide ad-hoc network on those devices -->
+    <bool name="config_show_adhoc_network">true</bool>
 </resources>
