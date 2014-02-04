@@ -18,6 +18,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.os.SystemClock;
+import android.os.UserHandle;
 import android.text.format.Formatter;
 import android.util.Log;
 
@@ -163,8 +164,12 @@ public class ApplicationsState {
         private final Collator sCollator = Collator.getInstance();
         @Override
         public int compare(AppEntry object1, AppEntry object2) {
-            if (object1.info.enabled != object2.info.enabled) {
-                return object1.info.enabled ? -1 : 1;
+            final boolean normal1 = object1.info.enabled
+                    && (object1.info.flags&ApplicationInfo.FLAG_INSTALLED) != 0;
+            final boolean normal2 = object2.info.enabled
+                    && (object2.info.flags&ApplicationInfo.FLAG_INSTALLED) != 0;
+            if (normal1 != normal2) {
+                return normal1 ? -1 : 1;
             }
             return sCollator.compare(object1.label, object2.label);
         }
@@ -232,11 +237,39 @@ public class ApplicationsState {
         }
     };
 
+    public static final AppFilter DISABLED_FILTER = new AppFilter() {
+        public void init() {
+        }
+        
+        @Override
+        public boolean filterApp(ApplicationInfo info) {
+            if (!info.enabled) {
+                return true;
+            }
+            return false;
+        }
+    };
+
+    public static final AppFilter ALL_ENABLED_FILTER = new AppFilter() {
+        public void init() {
+        }
+        
+        @Override
+        public boolean filterApp(ApplicationInfo info) {
+            if (info.enabled) {
+                return true;
+            }
+            return false;
+        }
+    };
+
     final Context mContext;
     final PackageManager mPm;
+    final int mRetrieveFlags;
     PackageIntentReceiver mPackageIntentReceiver;
 
     boolean mResumed;
+    boolean mHaveDisabledApps;
 
     // Information about all applications.  Synchronize on mEntriesMap
     // to protect access to these.
@@ -397,7 +430,17 @@ public class ApplicationsState {
                 Process.THREAD_PRIORITY_BACKGROUND);
         mThread.start();
         mBackgroundHandler = new BackgroundHandler(mThread.getLooper());
-        
+
+        // Only the owner can see all apps.
+        if (UserHandle.myUserId() == 0) {
+            mRetrieveFlags = PackageManager.GET_UNINSTALLED_PACKAGES |
+                    PackageManager.GET_DISABLED_COMPONENTS |
+                    PackageManager.GET_DISABLED_UNTIL_USED_COMPONENTS;
+        } else {
+            mRetrieveFlags = PackageManager.GET_DISABLED_COMPONENTS |
+                    PackageManager.GET_DISABLED_UNTIL_USED_COMPONENTS;
+        }
+
         /**
          * This is a trick to prevent the foreground thread from being delayed.
          * The problem is that Dalvik monitors are initially spin locks, to keep
@@ -587,9 +630,7 @@ public class ApplicationsState {
             mPackageIntentReceiver = new PackageIntentReceiver();
             mPackageIntentReceiver.registerReceiver();
         }
-        mApplications = mPm.getInstalledApplications(
-                PackageManager.GET_UNINSTALLED_PACKAGES |
-                PackageManager.GET_DISABLED_COMPONENTS);
+        mApplications = mPm.getInstalledApplications(mRetrieveFlags);
         if (mApplications == null) {
             mApplications = new ArrayList<ApplicationInfo>();
         }
@@ -605,15 +646,18 @@ public class ApplicationsState {
             }
         }
 
+        mHaveDisabledApps = false;
         for (int i=0; i<mApplications.size(); i++) {
             final ApplicationInfo info = mApplications.get(i);
             // Need to trim out any applications that are disabled by
             // something different than the user.
-            if (!info.enabled && info.enabledSetting
-                    != PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                mApplications.remove(i);
-                i--;
-                continue;
+            if (!info.enabled) {
+                if (info.enabledSetting != PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                    mApplications.remove(i);
+                    i--;
+                    continue;
+                }
+                mHaveDisabledApps = true;
             }
             final AppEntry entry = mEntriesMap.get(info.packageName);
             if (entry != null) {
@@ -624,6 +668,10 @@ public class ApplicationsState {
         if (!mBackgroundHandler.hasMessages(BackgroundHandler.MSG_LOAD_ENTRIES)) {
             mBackgroundHandler.sendEmptyMessage(BackgroundHandler.MSG_LOAD_ENTRIES);
         }
+    }
+
+    public boolean haveDisabledApps() {
+        return mHaveDisabledApps;
     }
 
     void doPauseIfNeededLocked() {
@@ -719,9 +767,14 @@ public class ApplicationsState {
                     if (DEBUG_LOCKING) Log.v(TAG, "addPackage release lock: already exists");
                     return;
                 }
-                ApplicationInfo info = mPm.getApplicationInfo(pkgName,
-                        PackageManager.GET_UNINSTALLED_PACKAGES |
-                        PackageManager.GET_DISABLED_COMPONENTS);
+                ApplicationInfo info = mPm.getApplicationInfo(pkgName, mRetrieveFlags);
+                if (!info.enabled) {
+                    if (info.enabledSetting
+                            != PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                        return;
+                    }
+                    mHaveDisabledApps = true;
+                }
                 mApplications.add(info);
                 if (!mBackgroundHandler.hasMessages(BackgroundHandler.MSG_LOAD_ENTRIES)) {
                     mBackgroundHandler.sendEmptyMessage(BackgroundHandler.MSG_LOAD_ENTRIES);
@@ -747,7 +800,17 @@ public class ApplicationsState {
                     mEntriesMap.remove(pkgName);
                     mAppEntries.remove(entry);
                 }
+                ApplicationInfo info = mApplications.get(idx);
                 mApplications.remove(idx);
+                if (!info.enabled) {
+                    mHaveDisabledApps = false;
+                    for (int i=0; i<mApplications.size(); i++) {
+                        if (!mApplications.get(i).enabled) {
+                            mHaveDisabledApps = true;
+                            break;
+                        }
+                    }
+                }
                 if (!mMainHandler.hasMessages(MainHandler.MSG_PACKAGE_LIST_CHANGED)) {
                     mMainHandler.sendEmptyMessage(MainHandler.MSG_PACKAGE_LIST_CHANGED);
                 }
@@ -786,7 +849,10 @@ public class ApplicationsState {
 
     private long getTotalExternalSize(PackageStats ps) {
         if (ps != null) {
+            // We also include the cache size here because for non-emulated
+            // we don't automtically clean cache files.
             return ps.externalCodeSize + ps.externalDataSize
+                    + ps.externalCacheSize
                     + ps.externalMediaSize + ps.externalObbSize;
         }
         return SIZE_INVALID;
@@ -822,7 +888,7 @@ public class ApplicationsState {
                             long externalCodeSize = stats.externalCodeSize
                                     + stats.externalObbSize;
                             long externalDataSize = stats.externalDataSize
-                                    + stats.externalMediaSize + stats.externalCacheSize;
+                                    + stats.externalMediaSize;
                             long newSize = externalCodeSize + externalDataSize
                                     + getTotalInternalSize(stats);
                             if (entry.size != newSize ||

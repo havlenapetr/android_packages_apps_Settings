@@ -20,10 +20,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
 import android.net.NetworkInfo;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -104,7 +106,7 @@ public class WifiEnabler implements CompoundButton.OnCheckedChangeListener  {
             return;
         }
         // Show toast message if Wi-Fi is not allowed in airplane mode
-        if (isChecked && !WirelessSettings.isRadioAllowed(mContext, Settings.System.RADIO_WIFI)) {
+        if (isChecked && !WirelessSettings.isRadioAllowed(mContext, Settings.Global.RADIO_WIFI)) {
             Toast.makeText(mContext, R.string.wifi_in_airplane_mode, Toast.LENGTH_SHORT).show();
             // Reset switch to off. No infinite check/listenenr loop.
             buttonView.setChecked(false);

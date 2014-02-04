@@ -23,9 +23,15 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.UserManager;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.android.settings.R;
+import com.android.settings.Utils;
 
 import java.io.IOException;
 
@@ -46,7 +52,7 @@ import java.io.IOException;
  */
 public class AddAccountSettings extends Activity {
     /**
-     * 
+     *
      */
     private static final String KEY_ADD_CALLED = "AddAccountCalled";
 
@@ -61,19 +67,36 @@ public class AddAccountSettings extends Activity {
 
     /* package */ static final String EXTRA_SELECTED_ACCOUNT = "selected_account";
 
+    // show additional info regarding the use of a device with multiple users
+    static final String EXTRA_HAS_MULTIPLE_USERS = "hasMultipleUsers";
+
     private static final int CHOOSE_ACCOUNT_REQUEST = 1;
+    private static final int ADD_ACCOUNT_REQUEST = 2;
 
     private PendingIntent mPendingIntent;
 
-    private AccountManagerCallback<Bundle> mCallback = new AccountManagerCallback<Bundle>() {
+    private final AccountManagerCallback<Bundle> mCallback = new AccountManagerCallback<Bundle>() {
+        @Override
         public void run(AccountManagerFuture<Bundle> future) {
+            boolean done = true;
             try {
                 Bundle bundle = future.getResult();
-                bundle.keySet();
-                setResult(RESULT_OK);
-
-                if (mPendingIntent != null) {
-                    mPendingIntent.cancel();
+                //bundle.keySet();
+                Intent intent = (Intent) bundle.get(AccountManager.KEY_INTENT);
+                if (intent != null) {
+                    done = false;
+                    Bundle addAccountOptions = new Bundle();
+                    addAccountOptions.putParcelable(KEY_CALLER_IDENTITY, mPendingIntent);
+                    addAccountOptions.putBoolean(EXTRA_HAS_MULTIPLE_USERS,
+                            Utils.hasMultipleUsers(AddAccountSettings.this));
+                    intent.putExtras(addAccountOptions);
+                    startActivityForResult(intent, ADD_ACCOUNT_REQUEST);
+                } else {
+                    setResult(RESULT_OK);
+                    if (mPendingIntent != null) {
+                        mPendingIntent.cancel();
+                        mPendingIntent = null;
+                    }
                 }
 
                 if (Log.isLoggable(TAG, Log.VERBOSE)) Log.v(TAG, "account added: " + bundle);
@@ -84,7 +107,9 @@ public class AddAccountSettings extends Activity {
             } catch (AuthenticatorException e) {
                 if (Log.isLoggable(TAG, Log.VERBOSE)) Log.v(TAG, "addAccount failed: " + e);
             } finally {
-                finish();
+                if (done) {
+                    finish();
+                }
             }
         }
     };
@@ -100,6 +125,14 @@ public class AddAccountSettings extends Activity {
             if (Log.isLoggable(TAG, Log.VERBOSE)) Log.v(TAG, "restored");
         }
 
+        final UserManager um = (UserManager) getSystemService(Context.USER_SERVICE);
+        if (um.hasUserRestriction(UserManager.DISALLOW_MODIFY_ACCOUNTS)) {
+            // We aren't allowed to add an account.
+            Toast.makeText(this, R.string.user_cannot_add_accounts_message, Toast.LENGTH_LONG)
+                    .show();
+            finish();
+            return;
+        }
         if (mAddAccountCalled) {
             // We already called add account - maybe the callback was lost.
             finish();
@@ -131,9 +164,18 @@ public class AddAccountSettings extends Activity {
             // Go to account setup screen. finish() is called inside mCallback.
             addAccount(data.getStringExtra(EXTRA_SELECTED_ACCOUNT));
             break;
+        case ADD_ACCOUNT_REQUEST:
+            setResult(resultCode);
+            if (mPendingIntent != null) {
+                mPendingIntent.cancel();
+                mPendingIntent = null;
+            }
+            finish();
+            break;
         }
     }
 
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_ADD_CALLED, mAddAccountCalled);
@@ -144,12 +186,13 @@ public class AddAccountSettings extends Activity {
         Bundle addAccountOptions = new Bundle();
         mPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(), 0);
         addAccountOptions.putParcelable(KEY_CALLER_IDENTITY, mPendingIntent);
+        addAccountOptions.putBoolean(EXTRA_HAS_MULTIPLE_USERS, Utils.hasMultipleUsers(this));
         AccountManager.get(this).addAccount(
                 accountType,
                 null, /* authTokenType */
                 null, /* requiredFeatures */
                 addAccountOptions,
-                this,
+                null,
                 mCallback,
                 null /* handler */);
         mAddAccountCalled  = true;

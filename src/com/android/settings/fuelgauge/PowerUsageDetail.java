@@ -16,6 +16,8 @@
 
 package com.android.settings.fuelgauge;
 
+import static com.android.settings.Utils.prepareCustomPreferencesList;
+
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ApplicationErrorReport;
@@ -37,6 +39,7 @@ import android.os.Process;
 import android.preference.PreferenceActivity;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +65,8 @@ public class PowerUsageDetail extends Fragment implements Button.OnClickListener
         WIFI,
         BLUETOOTH,
         SCREEN,
-        APP
+        APP,
+        USER
     }
 
     // Note: Must match the sequence of the DrainType
@@ -73,7 +77,8 @@ public class PowerUsageDetail extends Fragment implements Button.OnClickListener
         R.string.battery_desc_wifi,
         R.string.battery_desc_bluetooth,
         R.string.battery_desc_display,
-        R.string.battery_desc_apps
+        R.string.battery_desc_apps,
+        R.string.battery_desc_users,
     };
 
     public static final int ACTION_DISPLAY_SETTINGS = 1;
@@ -138,8 +143,12 @@ public class PowerUsageDetail extends Fragment implements Button.OnClickListener
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = mRootView = inflater.inflate(R.layout.power_usage_details, null);
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.power_usage_details, container, false);
+        prepareCustomPreferencesList(container, view, view, false);
+
+        mRootView = view;
         createDetails();
         return view;
     }
@@ -225,8 +234,8 @@ public class PowerUsageDetail extends Fragment implements Button.OnClickListener
             mReportButton.setOnClickListener(this);
             
             // check if error reporting is enabled in secure settings
-            int enabled = Settings.Secure.getInt(getActivity().getContentResolver(),
-                    Settings.Secure.SEND_ACTION_APP_ERROR, 0);
+            int enabled = Settings.Global.getInt(getActivity().getContentResolver(),
+                    Settings.Global.SEND_ACTION_APP_ERROR, 0);
             if (enabled != 0) {
                 if (mPackages != null && mPackages.length > 0) {
                     try {
@@ -307,10 +316,12 @@ public class PowerUsageDetail extends Fragment implements Button.OnClickListener
                 switch (mTypes[i]) {
                     case R.string.usage_type_data_recv:
                     case R.string.usage_type_data_send:
-                        value = Utils.formatBytes(getActivity(), mValues[i]);
+                        final long bytes = (long) (mValues[i]);
+                        value = Formatter.formatFileSize(getActivity(), bytes);
                         break;
                     case R.string.usage_type_no_coverage:
-                        value = String.format("%d%%", (int) Math.floor(mValues[i]));
+                        final int percentage = (int) Math.floor(mValues[i]);
+                        value = getActivity().getString(R.string.percentage, percentage);
                         break;
                     case R.string.usage_type_gps:
                         mUsesGps = true;
@@ -453,6 +464,7 @@ public class PowerUsageDetail extends Fragment implements Button.OnClickListener
                 Uri.fromParts("package", mPackages[0], null));
         intent.putExtra(Intent.EXTRA_PACKAGES, mPackages);
         intent.putExtra(Intent.EXTRA_UID, mUid);
+        intent.putExtra(Intent.EXTRA_USER_HANDLE, mUid);
         getActivity().sendOrderedBroadcast(intent, null, mCheckKillProcessesReceiver, null,
                 Activity.RESULT_CANCELED, null, null);
     }

@@ -43,6 +43,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.internal.telephony.Phone;
+import com.android.internal.telephony.PhoneConstants;
 import com.android.internal.telephony.TelephonyIntents;
 import com.android.internal.telephony.TelephonyProperties;
 
@@ -80,6 +81,7 @@ public class ApnSettings extends PreferenceActivity implements
 
     private RestoreApnUiHandler mRestoreApnUiHandler;
     private RestoreApnProcessHandler mRestoreApnProcessHandler;
+    private HandlerThread mRestoreDefaultApnThread;
 
     private String mSelectedKey;
 
@@ -90,7 +92,7 @@ public class ApnSettings extends PreferenceActivity implements
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(
                     TelephonyIntents.ACTION_ANY_DATA_CONNECTION_STATE_CHANGED)) {
-                Phone.DataState state = getMobileDataState(intent);
+                PhoneConstants.DataState state = getMobileDataState(intent);
                 switch (state) {
                 case CONNECTED:
                     if (!mRestoreDefaultApnMode) {
@@ -104,12 +106,12 @@ public class ApnSettings extends PreferenceActivity implements
         }
     };
 
-    private static Phone.DataState getMobileDataState(Intent intent) {
-        String str = intent.getStringExtra(Phone.STATE_KEY);
+    private static PhoneConstants.DataState getMobileDataState(Intent intent) {
+        String str = intent.getStringExtra(PhoneConstants.STATE_KEY);
         if (str != null) {
-            return Enum.valueOf(Phone.DataState.class, str);
+            return Enum.valueOf(PhoneConstants.DataState.class, str);
         } else {
-            return Phone.DataState.DISCONNECTED;
+            return PhoneConstants.DataState.DISCONNECTED;
         }
     }
 
@@ -140,8 +142,17 @@ public class ApnSettings extends PreferenceActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        
+
         unregisterReceiver(mMobileStateReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mRestoreDefaultApnThread != null) {
+            mRestoreDefaultApnThread.quit();
+        }
     }
 
     private void fillList() {
@@ -153,43 +164,45 @@ public class ApnSettings extends PreferenceActivity implements
                 "_id", "name", "apn", "type"}, where, null,
                 Telephony.Carriers.DEFAULT_SORT_ORDER);
 
-        PreferenceGroup apnList = (PreferenceGroup) findPreference("apn_list");
-        apnList.removeAll();
+        if (cursor != null) {
+            PreferenceGroup apnList = (PreferenceGroup) findPreference("apn_list");
+            apnList.removeAll();
 
-        ArrayList<Preference> mmsApnList = new ArrayList<Preference>();
+            ArrayList<Preference> mmsApnList = new ArrayList<Preference>();
 
-        mSelectedKey = getSelectedApnKey();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String name = cursor.getString(NAME_INDEX);
-            String apn = cursor.getString(APN_INDEX);
-            String key = cursor.getString(ID_INDEX);
-            String type = cursor.getString(TYPES_INDEX);
+            mSelectedKey = getSelectedApnKey();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String name = cursor.getString(NAME_INDEX);
+                String apn = cursor.getString(APN_INDEX);
+                String key = cursor.getString(ID_INDEX);
+                String type = cursor.getString(TYPES_INDEX);
 
-            ApnPreference pref = new ApnPreference(this);
+                ApnPreference pref = new ApnPreference(this);
 
-            pref.setKey(key);
-            pref.setTitle(name);
-            pref.setSummary(apn);
-            pref.setPersistent(false);
-            pref.setOnPreferenceChangeListener(this);
+                pref.setKey(key);
+                pref.setTitle(name);
+                pref.setSummary(apn);
+                pref.setPersistent(false);
+                pref.setOnPreferenceChangeListener(this);
 
-            boolean selectable = ((type == null) || !type.equals("mms"));
-            pref.setSelectable(selectable);
-            if (selectable) {
-                if ((mSelectedKey != null) && mSelectedKey.equals(key)) {
-                    pref.setChecked();
+                boolean selectable = ((type == null) || !type.equals("mms"));
+                pref.setSelectable(selectable);
+                if (selectable) {
+                    if ((mSelectedKey != null) && mSelectedKey.equals(key)) {
+                        pref.setChecked();
+                    }
+                    apnList.addPreference(pref);
+                } else {
+                    mmsApnList.add(pref);
                 }
-                apnList.addPreference(pref);
-            } else {
-                mmsApnList.add(pref);
+                cursor.moveToNext();
             }
-            cursor.moveToNext();
-        }
-        cursor.close();
+            cursor.close();
 
-        for (Preference preference : mmsApnList) {
-            apnList.addPreference(preference);
+            for (Preference preference : mmsApnList) {
+                apnList.addPreference(preference);
+            }
         }
     }
 
@@ -198,7 +211,8 @@ public class ApnSettings extends PreferenceActivity implements
         super.onCreateOptionsMenu(menu);
         menu.add(0, MENU_NEW, 0,
                 getResources().getString(R.string.menu_new))
-                .setIcon(android.R.drawable.ic_menu_add);
+                .setIcon(android.R.drawable.ic_menu_add)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         menu.add(0, MENU_RESTORE, 0,
                 getResources().getString(R.string.menu_restore))
                 .setIcon(android.R.drawable.ic_menu_upload);
@@ -272,12 +286,13 @@ public class ApnSettings extends PreferenceActivity implements
             mRestoreApnUiHandler = new RestoreApnUiHandler();
         }
 
-        if (mRestoreApnProcessHandler == null) {
-            HandlerThread restoreDefaultApnThread = new HandlerThread(
+        if (mRestoreApnProcessHandler == null ||
+            mRestoreDefaultApnThread == null) {
+            mRestoreDefaultApnThread = new HandlerThread(
                     "Restore default APN Handler: Process Thread");
-            restoreDefaultApnThread.start();
+            mRestoreDefaultApnThread.start();
             mRestoreApnProcessHandler = new RestoreApnProcessHandler(
-                    restoreDefaultApnThread.getLooper(), mRestoreApnUiHandler);
+                    mRestoreDefaultApnThread.getLooper(), mRestoreApnUiHandler);
         }
 
         mRestoreApnProcessHandler
@@ -317,7 +332,7 @@ public class ApnSettings extends PreferenceActivity implements
             switch (msg.what) {
                 case EVENT_RESTORE_DEFAULTAPN_START:
                     ContentResolver resolver = getContentResolver();
-                    resolver.delete(DEFAULTAPN_URI, null, null);                    
+                    resolver.delete(DEFAULTAPN_URI, null, null);
                     mRestoreApnUiHandler
                         .sendEmptyMessage(EVENT_RESTORE_DEFAULTAPN_COMPLETE);
                     break;

@@ -63,11 +63,12 @@ public class BatteryInfo extends Activity {
 
     /**
      * Format a number of tenths-units as a decimal string without using a
-     * conversion to float.  E.g. 347 -> "34.7"
+     * conversion to float.  E.g. 347 -> "34.7", -99 -> "-9.9"
      */
     private final String tenthsToFixedString(int x) {
         int tens = x / 10;
-        return Integer.toString(tens) + "." + (x - 10 * tens);
+        // use Math.abs to avoid "-9.-9" about -99
+        return Integer.toString(tens) + "." + Math.abs(x - 10 * tens);
     }
 
    /**
@@ -101,6 +102,9 @@ public class BatteryInfo extends Activity {
                         break;
                     case BatteryManager.BATTERY_PLUGGED_USB:
                         mPower.setText(getString(R.string.battery_info_power_usb));
+                        break;
+                    case BatteryManager.BATTERY_PLUGGED_WIRELESS:
+                        mPower.setText(getString(R.string.battery_info_power_wireless));
                         break;
                     case (BatteryManager.BATTERY_PLUGGED_AC|BatteryManager.BATTERY_PLUGGED_USB):
                         mPower.setText(getString(R.string.battery_info_power_ac_usb));

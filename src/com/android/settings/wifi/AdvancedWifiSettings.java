@@ -17,15 +17,18 @@
 package com.android.settings.wifi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiWatchdogStateMachine;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
-import android.provider.Settings.Secure;
+import android.provider.Settings.Global;
+import android.security.Credentials;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -44,6 +47,9 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     private static final String KEY_NOTIFY_OPEN_NETWORKS = "notify_open_networks";
     private static final String KEY_SLEEP_POLICY = "sleep_policy";
     private static final String KEY_POOR_NETWORK_DETECTION = "wifi_poor_network_detection";
+    private static final String KEY_SCAN_ALWAYS_AVAILABLE = "wifi_scan_always_available";
+    private static final String KEY_INSTALL_CREDENTIALS = "install_credentials";
+    private static final String KEY_SUSPEND_OPTIMIZATIONS = "suspend_optimizations";
 
     private WifiManager mWifiManager;
 
@@ -69,8 +75,8 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
     private void initPreferences() {
         CheckBoxPreference notifyOpenNetworks =
             (CheckBoxPreference) findPreference(KEY_NOTIFY_OPEN_NETWORKS);
-        notifyOpenNetworks.setChecked(Secure.getInt(getContentResolver(),
-                Secure.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON, 0) == 1);
+        notifyOpenNetworks.setChecked(Settings.Global.getInt(getContentResolver(),
+                Settings.Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON, 0) == 1);
         notifyOpenNetworks.setEnabled(mWifiManager.isWifiEnabled());
 
         CheckBoxPreference poorNetworkDetection =
@@ -79,10 +85,29 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             if (Utils.isWifiOnly(getActivity())) {
                 getPreferenceScreen().removePreference(poorNetworkDetection);
             } else {
-                poorNetworkDetection.setChecked(Secure.getInt(getContentResolver(),
-                        Secure.WIFI_WATCHDOG_POOR_NETWORK_TEST_ENABLED, 1) == 1);
+                poorNetworkDetection.setChecked(Global.getInt(getContentResolver(),
+                        Global.WIFI_WATCHDOG_POOR_NETWORK_TEST_ENABLED,
+                        WifiWatchdogStateMachine.DEFAULT_POOR_NETWORK_AVOIDANCE_ENABLED ?
+                        1 : 0) == 1);
             }
         }
+
+        CheckBoxPreference scanAlwaysAvailable =
+            (CheckBoxPreference) findPreference(KEY_SCAN_ALWAYS_AVAILABLE);
+        scanAlwaysAvailable.setChecked(Global.getInt(getContentResolver(),
+                    Global.WIFI_SCAN_ALWAYS_AVAILABLE, 0) == 1);
+
+        Intent intent=new Intent(Credentials.INSTALL_AS_USER_ACTION);
+        intent.setClassName("com.android.certinstaller",
+                "com.android.certinstaller.CertInstallerMain");
+        intent.putExtra(Credentials.EXTRA_INSTALL_AS_UID, android.os.Process.WIFI_UID);
+        Preference pref = findPreference(KEY_INSTALL_CREDENTIALS);
+        pref.setIntent(intent);
+
+        CheckBoxPreference suspendOptimizations =
+            (CheckBoxPreference) findPreference(KEY_SUSPEND_OPTIMIZATIONS);
+        suspendOptimizations.setChecked(Global.getInt(getContentResolver(),
+                Global.WIFI_SUSPEND_OPTIMIZATIONS_ENABLED, 1) == 1);
 
         ListPreference frequencyPref = (ListPreference) findPreference(KEY_FREQUENCY_BAND);
 
@@ -91,6 +116,7 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
             int value = mWifiManager.getFrequencyBand();
             if (value != -1) {
                 frequencyPref.setValue(String.valueOf(value));
+                updateFrequencyBandSummary(frequencyPref, value);
             } else {
                 Log.e(TAG, "Failed to fetch frequency band");
             }
@@ -107,9 +133,9 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
                 sleepPolicyPref.setEntries(R.array.wifi_sleep_policy_entries_wifi_only);
             }
             sleepPolicyPref.setOnPreferenceChangeListener(this);
-            int value = Settings.System.getInt(getContentResolver(),
-                    Settings.System.WIFI_SLEEP_POLICY,
-                    Settings.System.WIFI_SLEEP_POLICY_NEVER);
+            int value = Settings.Global.getInt(getContentResolver(),
+                    Settings.Global.WIFI_SLEEP_POLICY,
+                    Settings.Global.WIFI_SLEEP_POLICY_NEVER);
             String stringValue = String.valueOf(value);
             sleepPolicyPref.setValue(stringValue);
             updateSleepPolicySummary(sleepPolicyPref, stringValue);
@@ -136,17 +162,30 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
         Log.e(TAG, "Invalid sleep policy value: " + value);
     }
 
+    private void updateFrequencyBandSummary(Preference frequencyBandPref, int index) {
+        String[] summaries = getResources().getStringArray(R.array.wifi_frequency_band_entries);
+        frequencyBandPref.setSummary(summaries[index]);
+    }
+
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen screen, Preference preference) {
         String key = preference.getKey();
 
         if (KEY_NOTIFY_OPEN_NETWORKS.equals(key)) {
-            Secure.putInt(getContentResolver(),
-                    Secure.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON,
+            Global.putInt(getContentResolver(),
+                    Settings.Global.WIFI_NETWORKS_AVAILABLE_NOTIFICATION_ON,
                     ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
         } else if (KEY_POOR_NETWORK_DETECTION.equals(key)) {
-            Secure.putInt(getContentResolver(),
-                    Secure.WIFI_WATCHDOG_POOR_NETWORK_TEST_ENABLED,
+            Global.putInt(getContentResolver(),
+                    Global.WIFI_WATCHDOG_POOR_NETWORK_TEST_ENABLED,
+                    ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
+        } else if (KEY_SUSPEND_OPTIMIZATIONS.equals(key)) {
+            Global.putInt(getContentResolver(),
+                    Global.WIFI_SUSPEND_OPTIMIZATIONS_ENABLED,
+                    ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
+        } else if (KEY_SCAN_ALWAYS_AVAILABLE.equals(key)) {
+            Global.putInt(getContentResolver(),
+                    Global.WIFI_SCAN_ALWAYS_AVAILABLE,
                     ((CheckBoxPreference) preference).isChecked() ? 1 : 0);
         } else {
             return super.onPreferenceTreeClick(screen, preference);
@@ -160,7 +199,9 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
 
         if (KEY_FREQUENCY_BAND.equals(key)) {
             try {
-                mWifiManager.setFrequencyBand(Integer.parseInt((String) newValue), true);
+                int value = Integer.parseInt((String) newValue);
+                mWifiManager.setFrequencyBand(value, true);
+                updateFrequencyBandSummary(preference, value);
             } catch (NumberFormatException e) {
                 Toast.makeText(getActivity(), R.string.wifi_setting_frequency_band_error,
                         Toast.LENGTH_SHORT).show();
@@ -171,7 +212,7 @@ public class AdvancedWifiSettings extends SettingsPreferenceFragment
         if (KEY_SLEEP_POLICY.equals(key)) {
             try {
                 String stringValue = (String) newValue;
-                Settings.System.putInt(getContentResolver(), Settings.System.WIFI_SLEEP_POLICY,
+                Settings.Global.putInt(getContentResolver(), Settings.Global.WIFI_SLEEP_POLICY,
                         Integer.parseInt(stringValue));
                 updateSleepPolicySummary(preference, stringValue);
             } catch (NumberFormatException e) {

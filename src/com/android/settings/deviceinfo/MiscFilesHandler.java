@@ -144,8 +144,8 @@ public class MiscFilesHandler extends ListActivity {
         // Returns true if all deletions were successful.
         // If a deletion fails, the method stops attempting to delete and returns false.
         private boolean deleteDir(File dir) {
-            if (dir.isDirectory()) {
-                String[] children = dir.list();
+            String[] children = dir.list();
+            if (children != null) {
                 for (int i=0; i < children.length; i++) {
                     boolean success = deleteDir(new File(dir, children[i]));
                     if (!success) {
@@ -193,8 +193,8 @@ public class MiscFilesHandler extends ListActivity {
             mContext = activity;
             final StorageVolume storageVolume = activity.getIntent().getParcelableExtra(
                     StorageVolume.EXTRA_STORAGE_VOLUME);
-            StorageMeasurement mMeasurement = 
-                StorageMeasurement.getInstance(activity, storageVolume, false /*Unused as a key*/);
+            StorageMeasurement mMeasurement = StorageMeasurement.getInstance(
+                    activity, storageVolume);
             if (mMeasurement == null) return;
             mData = (ArrayList<StorageMeasurement.FileInfo>) mMeasurement.mFileInfoForMisc;
             if (mData != null) {

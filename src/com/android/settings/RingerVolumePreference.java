@@ -17,7 +17,6 @@
 package com.android.settings;
 
 import static android.os.BatteryManager.BATTERY_STATUS_UNKNOWN;
-import static android.provider.Telephony.Intents.SPN_STRINGS_UPDATED_ACTION;
 
 import com.android.internal.telephony.TelephonyIntents;
 
@@ -116,7 +115,8 @@ public class RingerVolumePreference extends VolumePreference {
             boolean muted = mAudioManager.isStreamMute(streamType);
 
             if (mCheckBoxes[i] != null) {
-                if ((streamType == AudioManager.STREAM_RING) &&
+                if (((streamType == AudioManager.STREAM_RING) ||
+                        (streamType == AudioManager.STREAM_NOTIFICATION)) &&
                         (mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE)) {
                     mCheckBoxes[i].setImageResource(
                             com.android.internal.R.drawable.ic_audio_ring_notif_vibrate);

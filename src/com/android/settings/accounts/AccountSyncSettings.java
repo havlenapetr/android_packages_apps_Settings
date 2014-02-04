@@ -28,17 +28,16 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SyncAdapterType;
 import android.content.SyncInfo;
 import android.content.SyncStatusInfo;
 import android.content.pm.ProviderInfo;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.UserManager;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -47,9 +46,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.settings.R;
+import com.android.settings.Utils;
 import com.google.android.collect.Lists;
 import com.google.android.collect.Maps;
 
@@ -79,7 +80,7 @@ public class AccountSyncSettings extends AccountPreferenceBase {
     private Account[] mAccounts;
     private ArrayList<SyncStateCheckBoxPreference> mCheckBoxes =
                 new ArrayList<SyncStateCheckBoxPreference>();
-    private ArrayList<String> mInvisibleAdapters = Lists.newArrayList();
+    private ArrayList<SyncAdapterType> mInvisibleAdapters = Lists.newArrayList();
 
     @Override
     public Dialog onCreateDialog(final int id) {
@@ -91,10 +92,12 @@ public class AccountSyncSettings extends AccountPreferenceBase {
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(R.string.remove_account_label,
                         new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AccountManager.get(AccountSyncSettings.this.getActivity())
                                 .removeAccount(mAccount,
                                 new AccountManagerCallback<Boolean>() {
+                            @Override
                             public void run(AccountManagerFuture<Boolean> future) {
                                 // If already out of this screen, don't proceed.
                                 if (!AccountSyncSettings.this.isResumed()) {
@@ -149,7 +152,10 @@ public class AccountSyncSettings extends AccountPreferenceBase {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.account_sync_screen, container, false);
-        
+
+        final ListView list = (ListView) view.findViewById(android.R.id.list);
+        Utils.prepareCustomPreferencesList(container, view, list, false);
+
         initializeUi(view);
 
         return view;
@@ -228,12 +234,15 @@ public class AccountSyncSettings extends AccountPreferenceBase {
         MenuItem syncCancel = menu.add(0, MENU_SYNC_CANCEL_ID, 0,
                 getString(R.string.sync_menu_sync_cancel))
                 .setIcon(com.android.internal.R.drawable.ic_menu_close_clear_cancel);
-        MenuItem removeAccount = menu.add(0, MENU_REMOVE_ACCOUNT_ID, 0,
-                getString(R.string.remove_account_label))
-                .setIcon(R.drawable.ic_menu_delete_holo_dark);
 
-        removeAccount.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER |
-                MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        final UserManager um = (UserManager) getSystemService(Context.USER_SERVICE);
+        if (!um.hasUserRestriction(UserManager.DISALLOW_MODIFY_ACCOUNTS)) {
+            MenuItem removeAccount = menu.add(0, MENU_REMOVE_ACCOUNT_ID, 0,
+                    getString(R.string.remove_account_label))
+                    .setIcon(R.drawable.ic_menu_delete_holo_dark);
+            removeAccount.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER |
+                    MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        }
         syncNow.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER |
                 MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         syncCancel.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER |
@@ -321,8 +330,11 @@ public class AccountSyncSettings extends AccountPreferenceBase {
         }
         // plus whatever the system needs to sync, e.g., invisible sync adapters
         if (mAccount != null) {
-            for (String authority : mInvisibleAdapters) {
-                requestOrCancelSync(mAccount, authority, startSync);
+            for (SyncAdapterType syncAdapter : mInvisibleAdapters) {
+                // invisible sync adapters' account type should be same as current account type
+                if (syncAdapter.accountType.equals(mAccount.type)) {
+                    requestOrCancelSync(mAccount, syncAdapter.authority, startSync);
+                }
             }
         }
     }
@@ -452,7 +464,7 @@ public class AccountSyncSettings extends AccountPreferenceBase {
             } else {
                 // keep track of invisible sync adapters, so sync now forces
                 // them to sync as well.
-                mInvisibleAdapters.add(sa.authority);
+                mInvisibleAdapters.add(sa);
             }
         }
 

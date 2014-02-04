@@ -149,8 +149,6 @@ public class RequestPermissionActivity extends Activity implements
 
     private void createDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(android.R.drawable.ic_dialog_info);
-        builder.setTitle(getString(R.string.bluetooth_permission_request));
 
         if (mNeededToEnableBluetooth) {
             // RequestPermissionHelperActivity has gotten confirmation from user
@@ -167,8 +165,8 @@ public class RequestPermissionActivity extends Activity implements
                 builder.setMessage(
                         getString(R.string.bluetooth_ask_discovery, mTimeout));
             }
-            builder.setPositiveButton(getString(R.string.yes), this);
-            builder.setNegativeButton(getString(R.string.no), this);
+            builder.setPositiveButton(getString(R.string.allow), this);
+            builder.setNegativeButton(getString(R.string.deny), this);
         }
 
         mDialog = builder.create();
@@ -228,8 +226,12 @@ public class RequestPermissionActivity extends Activity implements
         } else if (mLocalAdapter.setScanMode(
                 BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE, mTimeout)) {
             // If already in discoverable mode, this will extend the timeout.
+            long endTime = System.currentTimeMillis() + (long) mTimeout * 1000;
             LocalBluetoothPreferences.persistDiscoverableEndTimestamp(
-                    this, System.currentTimeMillis() + (long) mTimeout * 1000);
+                    this, endTime);
+            if (0 < mTimeout) {
+               BluetoothDiscoverableTimeoutReceiver.setDiscoverableAlarm(this, endTime);
+            }
             returnCode = mTimeout;
             // Activity.RESULT_FIRST_USER should be 1
             if (returnCode < RESULT_FIRST_USER) {
